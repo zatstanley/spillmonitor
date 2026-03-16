@@ -88,4 +88,4 @@ Acesse em `http://localhost:5173`
 
 ## 📄 Licença
 
-MIT © 2024 — Desenvolvido por Manoela Stanley
+MIT © 2026 — Desenvolvido por Manoela Stanley
