@@ -1,57 +1,55 @@
-﻿# 🌊 Ocean Spill Monitor
+# 🌊 Ocean Spill Monitor
 
 > Painel de monitoramento marinho em tempo real para gestão de incidentes de derramamento de petróleo.
 
-![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000?style=flat&logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat&logo=typescript)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38BDF8?style=flat&logo=tailwindcss)
+![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?style=flat&logo=leaflet)
+
+> ⚠️ **Todos os dados exibidos são fictícios e criados apenas para fins ilustrativos.**
 
 ---
 
-## 📋 Sobre o projeto
+## 📋 Descrição
 
-O **Ocean Spill Monitor** é um dashboard interativo desenvolvido para monitoramento e gestão operacional de derramamentos de óleo no ambiente marinho. A interface consolida dados de múltiplas fontes em tempo real, permitindo tomadas de decisão rápidas e eficientes por equipes de resposta a emergências ambientais.
+O **Ocean Spill Monitor** é um conceito de dashboard de monitoramento ambiental desenvolvido para explorar como interfaces complexas de dados críticos podem ser construídas de forma clara e responsiva.
 
----
+O projeto simula um painel operacional real para equipes de resposta a derramamentos de petróleo, consolidando em uma única tela: localização geográfica dos incidentes, métricas de desempenho operacional, evolução temporal dos dados e status de contenção por ocorrência — tudo atualizado de forma reativa, a partir de dados simulados.
 
-## ✨ Funcionalidades
-
-- 📍 **Mapa interativo** com localização geográfica dos incidentes ativos (Leaflet)
-- 📊 **Gráficos dinâmicos** de tendência, volume derramado e tempo de resposta (Recharts)
-- 🚨 **Central de alertas** com classificação por criticidade (Crítico, Alto, Médio, Baixo)
-- 📈 **KPIs em tempo real**: incidentes ativos, tempo médio de resposta, volume e custo operacional
-- 🎯 **Progresso de contenção** por ocorrência com métricas de recuperação
-- 🌍 **Distribuição regional** com gráfico de rosca interativo
+O principal desafio de design foi lidar com **alta densidade de informação sem sacrificar a legibilidade**. Dashboards operacionais precisam mostrar tudo ao mesmo tempo, mas de forma que quem opera consiga tomar decisões em segundos. Cada componente foi pensado para ter uma hierarquia visual clara: o que é crítico aparece primeiro, o que é contextual fica em segundo plano.
 
 ---
 
-## 🛠️ Stack tecnológica
+## 🛠️ Tecnologias utilizadas
 
-| Tecnologia     | Versão | Uso                          |
-|----------------|--------|------------------------------|
-| React          | 18     | Interface e componentes       |
-| TypeScript     | 5      | Tipagem estática             |
-| Tailwind CSS   | 3      | Estilização utilitária       |
-| Recharts       | 2      | Gráficos e visualizações     |
-| Leaflet        | 1.9    | Mapas interativos            |
+| Tecnologia        | Uso no projeto                                               |
+|-------------------|--------------------------------------------------------------|
+| **Next.js 14**    | Framework principal com App Router para estrutura de rotas   |
+| **TypeScript**    | Tipagem de todos os dados, props e estados da aplicação      |
+| **Tailwind CSS**  | Estilização utilitária com design system consistente         |
+| **Recharts**      | Gráficos de linha, barra e rosca com responsividade nativa   |
+| **Leaflet**       | Mapa interativo com marcadores dinâmicos por severidade      |
+| **shadcn/ui**     | Componentes de UI acessíveis como base para o design system  |
 
 ---
 
-## 🚀 Como rodar localmente
+## 🏗️ Decisões de arquitetura
 
-```bash
-# Clone o repositório
-git clone https://github.com/zatsstanley/ocean-spill-monitor.git
+### Separação entre dados e apresentação
+Todos os dados simulados foram centralizados em `lib/dashboard-data.ts`, funcionando como uma camada de "mock de API". Isso mantém os componentes limpos e facilita a substituição futura por uma API real sem alterar a lógica de apresentação.
 
-# Instale as dependências
-cd ocean-spill-monitor
-npm install
+### Provedor de dados dedicado (`ospr-data-provider.tsx`)
+Em vez de passar props por múltiplos níveis, foi criado um provider específico para o dashboard que distribui os dados via Context API. Isso evita prop drilling e mantém cada componente focado apenas na sua responsabilidade visual.
 
-# Inicie o servidor de desenvolvimento
-npm run dev
-```
+### Componentização por domínio
+Os componentes foram organizados por função dentro do domínio `dashboard/`, não por tipo de elemento (ex: não existe pasta `charts/` ou `cards/`). Cada arquivo representa uma seção funcional do painel — `spill-map`, `trend-charts`, `operations-panel` — tornando a navegação no código mais intuitiva.
 
-Acesse em `http://localhost:5173`
+### Estilos do Leaflet isolados
+O Leaflet exige sobrescrever estilos globais que conflitam com o Tailwind. Para evitar poluir o `globals.css`, esses overrides foram encapsulados em `leaflet-styles.tsx`, um componente que injeta os estilos apenas quando o mapa está presente.
+
+### Hook `use-mobile` para responsividade lógica
+Além do Tailwind para responsividade visual, foi criado o hook `use-mobile.ts` para adaptar o **comportamento** dos componentes em telas menores — como colapsar o painel lateral ou simplificar os gráficos — separando responsividade de layout da responsividade de lógica.
 
 ---
 
@@ -83,6 +81,19 @@ Acesse em `http://localhost:5173`
 │   └── globals.css               # Estilos globais
 └── public/                       # Assets estáticos
 ```
+
+---
+
+## 🚀 Como rodar localmente
+
+```bash
+git clone https://github.com/zatsstanley/ocean-spill-monitor.git
+cd ocean-spill-monitor
+npm install
+npm run dev
+```
+
+Acesse em `http://localhost:3000`
 
 ---
 
